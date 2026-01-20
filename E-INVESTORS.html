@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>E-Investors Platform</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+body{margin:0;font-family:Segoe UI;background:#f4f6fa}
+header,footer{background:#0b2545;color:white;text-align:center;padding:18px}
+nav{background:#133b5c;text-align:center;padding:10px}
+nav button{margin:5px;padding:10px 16px;border:none;border-radius:6px;background:#1f6f8b;color:white;cursor:pointer}
+nav button:hover{background:#1597bb}
+.section{display:none}
+.container{padding:25px}
+.card{background:white;padding:20px;border-radius:12px;margin-bottom:20px;box-shadow:0 4px 12px rgba(0,0,0,.08)}
+h2,h3{color:#0b2545}
+input,select{width:100%;padding:12px;margin:8px 0}
+button.action{background:#0b2545;color:white;padding:12px;border:none;border-radius:6px;width:100%}
+.tag{font-size:12px;padding:4px 10px;border-radius:4px;color:white}
+.blue{background:#457b9d}
+.green{background:#2a9d8f}
+.orange{background:#f4a261}
+
+/* Welcome */
+#welcome{
+min-height:85vh;display:flex;justify-content:center;align-items:center;
+background:linear-gradient(to right,#0b2545,#133b5c);color:white;text-align:center
+}
+#welcome .hero{max-width:700px}
+
+/* Chat */
+#chatBtn{position:fixed;bottom:20px;right:20px;background:#0b2545;color:white;
+width:55px;height:55px;border-radius:50%;font-size:22px;display:flex;
+align-items:center;justify-content:center;cursor:pointer}
+#chatbox{position:fixed;bottom:90px;right:20px;width:320px;background:white;
+border-radius:12px;box-shadow:0 6px 18px rgba(0,0,0,.3);display:none}
+#chatHeader{background:#0b2545;color:white;padding:10px;border-radius:12px 12px 0 0}
+#chatBody{padding:10px;height:220px;overflow-y:auto;font-size:14px}
+#chatInput{width:100%;padding:10px;border:none;border-top:1px solid #ccc}
+</style>
+</head>
+
+<body>
+
+<header>
+<h1>E-Investors</h1>
+<p>Smart • Secure • Transparent Investments</p>
+</header>
+
+<nav>
+<button onclick="show('welcome')">Welcome</button>
+<button onclick="show('login')">Login</button>
+<button onclick="show('dashboard')">Dashboard</button>
+<button onclick="show('companies')">Companies</button>
+<button onclick="show('investors')">Investors</button>
+<button onclick="logout()">Logout</button>
+</nav>
+
+<!-- WELCOME -->
+<div id="welcome" class="section">
+<div class="hero">
+<h1>Where Capital Meets Opportunity</h1>
+<p>
+Connect verified investors with high-potential & struggling companies.<br>
+Track ROI, margins & platform growth.
+</p>
+<button class="action" onclick="show('login')">Join / Invest Now</button>
+</div>
+</div>
+
+<div class="container">
+
+<!-- LOGIN -->
+<div id="login" class="section card">
+<h3>Login / Signup</h3>
+<select id="role">
+<option value="investor">Investor</option>
+<option value="company">Company</option>
+<option value="admin">Admin</option>
+</select>
+<input id="name" placeholder="Full Name">
+<input id="email" placeholder="Email">
+<button class="action" onclick="login()">Continue</button>
+</div>
+
+<!-- DASHBOARD -->
+<div id="dashboard" class="section">
+
+<div id="investorDash" class="card">
+<h3>Investor Dashboard <span class="tag blue">Investor</span></h3>
+<p id="invName"></p>
+<canvas id="roiChart"></canvas>
+</div>
+
+<div id="companyDash" class="card">
+<h3>Company Dashboard <span class="tag green">Company</span></h3>
+<p>Turnover ₹12 Cr | Gross Margin 32%</p>
+<canvas id="turnoverChart"></canvas>
+</div>
+
+<div id="adminDash" class="card">
+<h3>Admin Dashboard <span class="tag orange">Admin</span></h3>
+<p>Pending Approvals: 6</p>
+<canvas id="platformChart"></canvas>
+</div>
+
+</div>
+
+<!-- COMPANIES -->
+<div id="companies" class="section">
+
+<div class="card"><h3>GreenTech Pvt Ltd</h3><p>Gujarat | ₹4.2 Cr | Margin 18% | Struggling</p></div>
+<div class="card"><h3>MediCore Pharma</h3><p>Maharashtra | ₹31 Cr | Margin 42%</p></div>
+<div class="card"><h3>AgroGrow Industries</h3><p>Punjab | ₹9.6 Cr | Margin 21%</p></div>
+<div class="card"><h3>SteelForge Ltd</h3><p>Odisha | ₹14 Cr | Margin 16% | Expansion Phase</p></div>
+<div class="card"><h3>SolarNest Energy</h3><p>Rajasthan | ₹6.8 Cr | Margin 28%</p></div>
+<div class="card"><h3>UrbanBuild Infra</h3><p>Karnataka | ₹22 Cr | Margin 19%</p></div>
+
+</div>
+
+<!-- INVESTORS -->
+<div id="investors" class="section">
+
+<div class="card"><h3>A*** P****</h3><p>₹10 Cr | Gujarat</p></div>
+<div class="card"><h3>P**** V****</h3><p>₹3 Cr | Delhi</p></div>
+<div class="card"><h3>R*** S****</h3><p>₹18 Cr | Maharashtra</p></div>
+<div class="card"><h3>N*** K****</h3><p>₹7 Cr | Karnataka</p></div>
+<div class="card"><h3>S*** M****</h3><p>₹25 Cr | Tamil Nadu</p></div>
+<div class="card"><h3>V*** J****</h3><p>₹12 Cr | Rajasthan</p></div>
+
+</div>
+
+</div>
+
+<footer>© 2026 E-Investors Platform</footer>
+
+<!-- CHAT -->
+<div id="chatBtn" onclick="toggleChat()">💬</div>
+<div id="chatbox">
+<div id="chatHeader">Investree AI</div>
+<div id="chatBody">
+<p><b>Investree:</b> Ask me about ROI, companies or investments.</p>
+</div>
+<input id="chatInput" placeholder="Ask Investree..." onkeypress="chat(event)">
+</div>
+
+<script>
+function show(id){
+document.querySelectorAll('.section').forEach(s=>s.style.display='none');
+document.getElementById(id).style.display='block';
+}
+
+function maskName(full){
+let p=full.trim().split(" ");
+if(p.length<2)return p[0][0]+"***";
+return p[0][0]+"*** "+p[1][0]+"****";
+}
+
+function login(){
+const name=document.getElementById("name").value.trim();
+const email=document.getElementById("email").value.trim();
+const role=document.getElementById("role").value;
+if(!name||!email){alert("Please fill all details");return;}
+localStorage.setItem("user",JSON.stringify({name,role}));
+show("dashboard");
+loadDash();
+}
+
+function loadDash(){
+const u=JSON.parse(localStorage.getItem("user"));
+investorDash.style.display=u.role==="investor"?"block":"none";
+companyDash.style.display=u.role==="company"?"block":"none";
+adminDash.style.display=u.role==="admin"?"block":"none";
+if(u.role==="investor")invName.innerText="Welcome "+maskName(u.name);
+drawCharts();
+}
+
+function logout(){localStorage.clear();show("welcome");}
+
+function drawCharts(){
+new Chart(roiChart,{type:'line',
+data:{labels:["Jan","Feb","Mar","Apr","May"],
+datasets:[{label:"ROI %",data:[10,14,19,25,31]}]}});
+
+new Chart(turnoverChart,{type:'line',
+data:{labels:["Jan","Feb","Mar","Apr","May"],
+datasets:[{label:"Turnover (Cr)",data:[4,6,8,11,14]}]}});
+
+new Chart(platformChart,{type:'line',
+data:{labels:["Jan","Feb","Mar","Apr","May"],
+datasets:[{label:"Users Growth",data:[50,65,82,100,140]}]}});}
+
+function toggleChat(){
+chatbox.style.display=chatbox.style.display==="block"?"none":"block";
+}
+
+function chat(e){
+if(e.key!=="Enter")return;
+let q=chatInput.value;
+chatBody.innerHTML+=`<p><b>You:</b> ${q}</p>`;
+chatBody.innerHTML+=`<p><b>Investree:</b> Platform average ROI is ~30%.</p>`;
+chatInput.value="";
+chatBody.scrollTop=chatBody.scrollHeight;
+}
+
+window.onload=()=>show("welcome");
+</script>
+
+</body>
+</html>
